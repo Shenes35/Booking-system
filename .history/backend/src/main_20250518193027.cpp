@@ -16,24 +16,19 @@ struct Coordinates {
 // Base class
 class Flight {
 protected:
-//protected is an access specifier ,They are Accessible within the class itself (like private), Accessible in derived (child) classes — unlike private and Not accessible from outside the class (unlike public).
+//protected is an access specifier ,They are Accessible within the class itself (like private), Accessible in derived (child) classes — unlike private andNot accessible from outside the class (unlike public).
     string flightNumber, departure, destination;
     int capacity, bookedSeats;
-    //initialised protected variables
 
 public:
     Flight(string fn = "", string dep = "", string dest = "", int cap = 0)
-    //function that is automatically called when an object is created. Take the given input parameters
         : flightNumber(fn), departure(dep), destination(dest), capacity(cap), bookedSeats(0) {}
-        //Member initializer list — directly sets member values
 
     virtual void displayDetails() const {
         cout << "Flight: " << flightNumber
              << ", From " << departure << " to " << destination
              << ", Capacity: " << capacity << ", Booked: " << bookedSeats << "\n";
     }
-    //run time polymorphism
-    //const	- Marks that the function doesn't modify any member variables of the object
 
     // Function overloading
     virtual bool bookSeat(int seats) {
@@ -58,7 +53,6 @@ public:
     string getDestination() const { return destination; }
     int getCapacity() const { return capacity; }
     int getBookedSeats() const { return bookedSeats; }
-    //Used for encapsulation
 
     // Operator overloading: +
     Flight operator+(const Flight& other) {
@@ -175,8 +169,6 @@ int main() {
                 cout << "5. Create a Cargo Flight\n";
                 cout << "6. Display All Flights\n";
                 cout << "7. Save Flights to File\n";
-                cout << "8. Compare Two Flights (==)\n";
-                cout << "9. Combine Bookings of Two Flights (+)\n";
                 cout << "0. Logout\n";
                 cout << "================================\n";
                 cout << "Choose an option: ";
@@ -226,62 +218,6 @@ int main() {
                         saveFlightToFile(*f, "flights.txt");
                         //calls a function to write that flight's data to a file.
                 }
-                else if (adminOption == 8) {
-                    if (flights.size() < 2) {
-                        cout << "Need at least 2 flights to compare.\n";
-                        continue;
-                    }
-                    int i, j;
-                    cout << "Enter indices of two flights to compare (1 to " << flights.size() << "): ";
-                    cin >> i >> j;
-                    cin.ignore();
-
-                    if (i < 1 || j < 1 || i > flights.size() || j > flights.size()) {
-                        cout << "Invalid indices.\n";
-                        continue;
-                    }
-
-                    if (*flights[i - 1] == *flights[j - 1])
-                        cout << "Flights have the SAME flight number.\n";
-                    else
-                        cout << "Flights have DIFFERENT flight numbers.\n";
-                }
-
-                else if (adminOption == 9) {
-                    if (flights.size() < 2) {
-                        cout << "Need at least 2 flights to combine.\n";
-                        continue;
-                    }
-                    int i, j;
-                    cout << "Enter indices of two flights to combine bookings (1 to " << flights.size() << "): ";
-                    cin >> i >> j;
-                    cin.ignore();
-
-                    if (i < 1 || j < 1 || i > flights.size() || j > flights.size()) {
-                        cout << "Invalid indices.\n";
-                        continue;
-                    }
-
-                    Flight combined = *flights[i - 1] + *flights[j - 1];
-                    cout << "Combined Booking Info:\n";
-                    combined.displayDetails();
-                    
-                    // Now delete and remove old flights and add combined flight
-                    delete flights[j - 1];
-                    delete flights[i - 1];
-
-                    if (i > j) {
-                        flights.erase(flights.begin() + i - 1);
-                        flights.erase(flights.begin() + j - 1);
-                    } else {
-                        flights.erase(flights.begin() + j - 1);
-                        flights.erase(flights.begin() + i - 1);
-                    }
-
-                    flights.push_back(new Flight(combined));
-                        cout << "Combined flight added at new index " << flights.size() << "\n";
-                    }
-
 
             } while (adminOption != 0);
         }

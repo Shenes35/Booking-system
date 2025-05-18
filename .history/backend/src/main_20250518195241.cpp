@@ -265,22 +265,21 @@ int main() {
                     Flight combined = *flights[i - 1] + *flights[j - 1];
                     cout << "Combined Booking Info:\n";
                     combined.displayDetails();
-                    
                     // Now delete and remove old flights and add combined flight
-                    delete flights[j - 1];
-                    delete flights[i - 1];
+    delete flights[j - 1];
+    delete flights[i - 1];
 
-                    if (i > j) {
-                        flights.erase(flights.begin() + i - 1);
-                        flights.erase(flights.begin() + j - 1);
-                    } else {
-                        flights.erase(flights.begin() + j - 1);
-                        flights.erase(flights.begin() + i - 1);
-                    }
+    if (i > j) {
+        flights.erase(flights.begin() + i - 1);
+        flights.erase(flights.begin() + j - 1);
+    } else {
+        flights.erase(flights.begin() + j - 1);
+        flights.erase(flights.begin() + i - 1);
+    }
 
-                    flights.push_back(new Flight(combined));
-                        cout << "Combined flight added at new index " << flights.size() << "\n";
-                    }
+    flights.push_back(new Flight(combined));
+                cout << "Combined flight added at new index " << flights.size() << "\n";
+                }
 
 
             } while (adminOption != 0);

@@ -265,7 +265,6 @@ int main() {
                     Flight combined = *flights[i - 1] + *flights[j - 1];
                     cout << "Combined Booking Info:\n";
                     combined.displayDetails();
-                    
                     // Now delete and remove old flights and add combined flight
                     delete flights[j - 1];
                     delete flights[i - 1];
@@ -279,8 +278,8 @@ int main() {
                     }
 
                     flights.push_back(new Flight(combined));
-                        cout << "Combined flight added at new index " << flights.size() << "\n";
-                    }
+                            cout << "Combined flight added at new index " << flights.size() << "\n";
+                }
 
 
             } while (adminOption != 0);

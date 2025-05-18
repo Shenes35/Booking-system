@@ -10,30 +10,22 @@ struct Coordinates {
     double latitude;
     double longitude;
 };
-//Suitable for storing GPS or map coordinates.
-
 
 // Base class
 class Flight {
 protected:
-//protected is an access specifier ,They are Accessible within the class itself (like private), Accessible in derived (child) classes — unlike private and Not accessible from outside the class (unlike public).
     string flightNumber, departure, destination;
     int capacity, bookedSeats;
-    //initialised protected variables
 
 public:
     Flight(string fn = "", string dep = "", string dest = "", int cap = 0)
-    //function that is automatically called when an object is created. Take the given input parameters
         : flightNumber(fn), departure(dep), destination(dest), capacity(cap), bookedSeats(0) {}
-        //Member initializer list — directly sets member values
 
     virtual void displayDetails() const {
         cout << "Flight: " << flightNumber
              << ", From " << departure << " to " << destination
              << ", Capacity: " << capacity << ", Booked: " << bookedSeats << "\n";
     }
-    //run time polymorphism
-    //const	- Marks that the function doesn't modify any member variables of the object
 
     // Function overloading
     virtual bool bookSeat(int seats) {
@@ -58,7 +50,6 @@ public:
     string getDestination() const { return destination; }
     int getCapacity() const { return capacity; }
     int getBookedSeats() const { return bookedSeats; }
-    //Used for encapsulation
 
     // Operator overloading: +
     Flight operator+(const Flight& other) {
@@ -175,8 +166,6 @@ int main() {
                 cout << "5. Create a Cargo Flight\n";
                 cout << "6. Display All Flights\n";
                 cout << "7. Save Flights to File\n";
-                cout << "8. Compare Two Flights (==)\n";
-                cout << "9. Combine Bookings of Two Flights (+)\n";
                 cout << "0. Logout\n";
                 cout << "================================\n";
                 cout << "Choose an option: ";
@@ -214,74 +203,13 @@ int main() {
                 }
                 else if (adminOption == 6) {
                     if (flights.empty()) cout << "No flights to show.\n";
-                    //flights.empty says no flights if objects are not present in the flight class then 
+                    
                     else for (auto* f : flights) f->displayDetails();
-                    //The auto keyword lets C++ automatically figure out the variable type for you. Since flights contains Flight*, auto* becomes Flight*.
-                    //goes through each pointer in the flights vector and gives it the name f during each loop cycle.call a fn using it.
                 }
                 else if (adminOption == 7) {
                     for (auto* f : flights)
-                    //flights is a vector storing pointers to various flight objects.
-                    //for (auto* f : flights) iterates through each flight pointer.
                         saveFlightToFile(*f, "flights.txt");
-                        //calls a function to write that flight's data to a file.
                 }
-                else if (adminOption == 8) {
-                    if (flights.size() < 2) {
-                        cout << "Need at least 2 flights to compare.\n";
-                        continue;
-                    }
-                    int i, j;
-                    cout << "Enter indices of two flights to compare (1 to " << flights.size() << "): ";
-                    cin >> i >> j;
-                    cin.ignore();
-
-                    if (i < 1 || j < 1 || i > flights.size() || j > flights.size()) {
-                        cout << "Invalid indices.\n";
-                        continue;
-                    }
-
-                    if (*flights[i - 1] == *flights[j - 1])
-                        cout << "Flights have the SAME flight number.\n";
-                    else
-                        cout << "Flights have DIFFERENT flight numbers.\n";
-                }
-
-                else if (adminOption == 9) {
-                    if (flights.size() < 2) {
-                        cout << "Need at least 2 flights to combine.\n";
-                        continue;
-                    }
-                    int i, j;
-                    cout << "Enter indices of two flights to combine bookings (1 to " << flights.size() << "): ";
-                    cin >> i >> j;
-                    cin.ignore();
-
-                    if (i < 1 || j < 1 || i > flights.size() || j > flights.size()) {
-                        cout << "Invalid indices.\n";
-                        continue;
-                    }
-
-                    Flight combined = *flights[i - 1] + *flights[j - 1];
-                    cout << "Combined Booking Info:\n";
-                    combined.displayDetails();
-                    
-                    // Now delete and remove old flights and add combined flight
-                    delete flights[j - 1];
-                    delete flights[i - 1];
-
-                    if (i > j) {
-                        flights.erase(flights.begin() + i - 1);
-                        flights.erase(flights.begin() + j - 1);
-                    } else {
-                        flights.erase(flights.begin() + j - 1);
-                        flights.erase(flights.begin() + i - 1);
-                    }
-
-                    flights.push_back(new Flight(combined));
-                        cout << "Combined flight added at new index " << flights.size() << "\n";
-                    }
-
 
             } while (adminOption != 0);
         }
@@ -307,46 +235,35 @@ int main() {
                         cout << "No flights available.\n";
                         continue;
                     }
-                    //Check if there are any flights. If the flights vector is empty, tell the user and go back to the menu.
 
                     for (size_t i = 0; i < flights.size(); ++i) {
                         cout << i + 1 << ". "; flights[i]->displayDetails();
                     }
-                    //Display all available flights. Each flight is listed with a number (1-based index) and its details.
 
                     int index;
                     cout << "Select flight number to book seat: ";
                     cin >> index; cin.ignore();
-                    //Ask the user to choose a flight by number (like "1" or "2").
-
                     if (index < 1 || index > flights.size()) {
                         cout << "Invalid index!\n";
                         continue;
                     }
-                    //Validate input. If the index is invalid, go back to the menu.
 
                     char ch;
                     cout << "Single seat, passenger name or multiple seats? (s/p/m): ";
                     cin >> ch; cin.ignore();
-                    //Ask how they want to book:- s: Single seat, p: Book by passenger name, m: Book multiple seats
                     if (ch == 's' || ch == 'S') {
                         if (flights[index - 1]->bookSeat())
                             cout << "Seat booked.\n";
                         else
                             cout << "Full flight!\n";
-                    } 
-                    //Tries to book 1 seat using default bookSeat() method.
-                    
-                    else if (ch == 'p' || ch == 'P') {
+                    } else if (ch == 'p' || ch == 'P') {
                         string name;
                         cout << "Enter passenger name: "; getline(cin, name);
                         if (flights[index - 1]->bookSeat(name))
                             cout << "Seat booked for " << name << ".\n";
                         else
                             cout << "Full flight!\n";
-                    } 
-                    //Tries to book 1 seat using the overloaded method bookSeat(string) and prints the name.
-                    else {
+                    } else {
                         int seats;
                         cout << "How many seats? "; cin >> seats;
                         if (flights[index - 1]->bookSeat(seats))
@@ -354,8 +271,6 @@ int main() {
                         else
                             cout << "Not enough seats!\n";
                     }
-                    //Tries to book multiple seats using bookSeat(int seats).
-
                 }
 
             } while (passengerOption != 0);
@@ -368,6 +283,5 @@ int main() {
 
     // Cleanup
     for (auto* f : flights) delete f;
-    //frees memory used by flight objects that were stored in RAM
     return 0;
 }

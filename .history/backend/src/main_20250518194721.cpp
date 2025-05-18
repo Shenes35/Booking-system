@@ -175,8 +175,6 @@ int main() {
                 cout << "5. Create a Cargo Flight\n";
                 cout << "6. Display All Flights\n";
                 cout << "7. Save Flights to File\n";
-                cout << "8. Compare Two Flights (==)\n";
-                cout << "9. Combine Bookings of Two Flights (+)\n";
                 cout << "0. Logout\n";
                 cout << "================================\n";
                 cout << "Choose an option: ";
@@ -262,25 +260,10 @@ int main() {
                         continue;
                     }
 
-                    Flight combined = *flights[i - 1] + *flights[j - 1];
-                    cout << "Combined Booking Info:\n";
-                    combined.displayDetails();
-                    
-                    // Now delete and remove old flights and add combined flight
-                    delete flights[j - 1];
-                    delete flights[i - 1];
-
-                    if (i > j) {
-                        flights.erase(flights.begin() + i - 1);
-                        flights.erase(flights.begin() + j - 1);
-                    } else {
-                        flights.erase(flights.begin() + j - 1);
-                        flights.erase(flights.begin() + i - 1);
-                    }
-
-                    flights.push_back(new Flight(combined));
-                        cout << "Combined flight added at new index " << flights.size() << "\n";
-                    }
+                Flight combined = *flights[i - 1] + *flights[j - 1];
+                cout << "Combined Booking Info:\n";
+                combined.displayDetails();
+}
 
 
             } while (adminOption != 0);

@@ -265,7 +265,6 @@ int main() {
                     Flight combined = *flights[i - 1] + *flights[j - 1];
                     cout << "Combined Booking Info:\n";
                     combined.displayDetails();
-                    
                     // Now delete and remove old flights and add combined flight
                     delete flights[j - 1];
                     delete flights[i - 1];
