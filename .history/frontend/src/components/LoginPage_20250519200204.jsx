@@ -1,0 +1,152 @@
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+
+const LoginPage = () => {
+  const { login } = useContext(AuthContext);
+  const [role, setRole] = useState('passenger');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+
+  const validate = () => {
+    const newErrors = {};
+    if (!username.trim()) newErrors.username = 'Username is required';
+    if (!password.trim()) newErrors.password = 'Password is required';
+    return newErrors;
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
+    login(role, username);
+    setPassword('');
+    if (role === 'admin') navigate('/admin');
+    else navigate('/passenger');
+  };
+  const pageStyle = {
+    minHeight: '100vh',
+    backgroundColor: '#f0f2f5', // light background
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+  };
+  
+  const containerStyle = {
+    maxWidth: '400px',
+    margin: '3rem auto',
+    padding: '2rem',
+    border: '1px solid #ddd',
+    borderRadius: '10px',
+    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#fff',
+    fontFamily: 'Arial, sans-serif'
+  };
+
+  const labelStyle = {
+    fontWeight: 'bold',
+    marginBottom: '0.25rem',
+    display: 'block',
+    color: '#333'
+  };
+
+  const inputStyle = {
+    width: '100%',
+    padding: '0.5rem',
+    borderRadius: '5px',
+    border: '1px solid #ccc',
+    marginBottom: '0.5rem',
+    fontSize: '1rem'
+  };
+
+  const errorStyle = {
+    color: 'red',
+    fontSize: '0.875rem',
+    marginBottom: '0.5rem'
+  };
+
+  const buttonStyle = {
+    width: '100%',
+    padding: '0.75rem',
+    backgroundColor: '#007bff',
+    color: '#fff',
+    border: 'none',
+    borderRadius: '5px',
+    fontSize: '1rem',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease'
+  };
+
+  const disabledButtonStyle = {
+    ...buttonStyle,
+    backgroundColor: '#999',
+    cursor: 'not-allowed'
+  };
+
+  return (
+    <main style={containerStyle}>
+      <h2 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Login</h2>
+      <form onSubmit={handleSubmit} noValidate>
+        <div style={{ marginBottom: '1rem' }}>
+          <label htmlFor="role-select" style={labelStyle}>Select Role:</label>
+          <select
+            id="role-select"
+            value={role}
+            onChange={e => setRole(e.target.value)}
+            style={inputStyle}
+            aria-label="Select user role"
+          >
+            <option value="admin">Admin</option>
+            <option value="passenger">Passenger</option>
+          </select>
+        </div>
+
+        <div>
+          <label htmlFor="username" style={labelStyle}>Username:</label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            value={username}
+            onChange={e => setUsername(e.target.value)}
+            autoComplete="username"
+            style={inputStyle}
+            aria-describedby="username-error"
+          />
+          {errors.username && <div id="username-error" style={errorStyle}>{errors.username}</div>}
+        </div>
+
+        <div>
+          <label htmlFor="password" style={labelStyle}>Password:</label>
+          <input
+            id="password"
+            name="password"
+            type="password"
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            autoComplete="current-password"
+            style={inputStyle}
+            aria-describedby="password-error"
+          />
+          {errors.password && <div id="password-error" style={errorStyle}>{errors.password}</div>}
+        </div>
+
+        <button
+          type="submit"
+          disabled={!username.trim() || !password.trim()}
+          style={!username.trim() || !password.trim() ? disabledButtonStyle : buttonStyle}
+        >
+          Login
+        </button>
+      </form>
+    </main>
+  );
+};
+
+export default LoginPage;

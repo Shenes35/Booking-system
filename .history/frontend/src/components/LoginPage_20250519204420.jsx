@@ -26,7 +26,7 @@ const LoginPage = () => {
   //errors → The current form error. setErrprs → A function used to update the errors object. useState({}) → Initializes errors with an empty object — meaning no errors yet.
   
   const navigate = useNavigate();
-  //When you call useNavigate(), it returns a function — this function is what we assign to navigate.
+  
 
   const validate = () => {
     const newErrors = {};

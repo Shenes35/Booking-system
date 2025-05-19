@@ -16,17 +16,11 @@ const LoginPage = () => {
 
   const [role, setRole] = useState('passenger');
   //uses the useState hook in React to create a piece of state in a functional component.
-  //role → The current value of the state (initially 'passenger'). setRole → A function used to update the role state. useState('passenger') → Initializes the state with the string 'passenger'.
-  
+  //role → The current value of the state (initially 'passenger'). setRole → A function used to update the role state.useState('passenger') → Initializes the state with the string 'passenger'.
   const [username, setUsername] = useState('');
-  //username → The current value of the state (initially ''). setUsername → A function used to update the username state. useState('') → Initializes the state with the empty string.
-  
   const [password, setPassword] = useState('');
   const [errors, setErrors] = useState({});
-  //errors → The current form error. setErrprs → A function used to update the errors object. useState({}) → Initializes errors with an empty object — meaning no errors yet.
-  
   const navigate = useNavigate();
-  //When you call useNavigate(), it returns a function — this function is what we assign to navigate.
 
   const validate = () => {
     const newErrors = {};
